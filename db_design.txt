@@ -1,0 +1,32 @@
+DB Design
+
+User
+-id
+-username
+-email
+-password
+
+Category
+-id
+-name
+-description
+
+Tag
+-id
+-name
+
+Post
+-id
+-title
+-content
+-category(FK Category)
+-tags
+-author(FK User)
+-published_date
+
+Comment
+-id
+-post(FK Post)
+-user(FK User)
+-message
+-created_date
