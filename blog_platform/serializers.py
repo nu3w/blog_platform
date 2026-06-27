@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Category, Tag, Post, Comment
 
 
-# serializer converts Django models into JSON
+# serializer converts Django models into JSON and vice-versa
 class CategorySerializer(serializers.ModelSerializer):
     class Meta: 
         model = Category
