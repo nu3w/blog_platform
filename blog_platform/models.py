@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+# stores blog categories
 class Category(models.Model):
     name = models.CharField(max_length=30, unique=True) 
     description = models.TextField(blank=True)
@@ -10,12 +11,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
+# stores tags that can be assigned to posts
 class Tag(models.Model):
     name = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
         return self.name
     
+# stores blog posts created by authors
 class Post(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
@@ -27,6 +30,7 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+# stores comments made on blog posts
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

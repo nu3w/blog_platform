@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +145,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Blog Platform API',
+    'DESCRIPTION': 'API documentation for the Blog Platform project.',
+    'VERSION': '1.0.0',
 }

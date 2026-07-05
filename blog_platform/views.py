@@ -15,6 +15,7 @@ from rest_framework.authtoken.models import Token
 
 # Create your views here.
 
+# allows only admins to modify data while everone can read it
 class IsAdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
@@ -22,16 +23,19 @@ class IsAdminOrReadOnly(BasePermission):
         return request.user and request.user.is_staff
 
 # ModelViewSet automatically creates HTTP methods(GET, POST, PUT, PATCH, DELETE)
+# handles CRUD operations for blog categories
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()       # retrieve all records from the database
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
     
+# handles CRUD operations for blog tags
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsAdminOrReadOnly]
     
+# handles CRUD operations for blog posts
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -50,6 +54,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):       # authomatically assigns the logged-in user as author
         serializer.save(author=self.request.user)
     
+# handles CRUD operations for blog comments
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -59,6 +64,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):       # authomatically assigns the logged-in user as comment owner
         serializer.save(user=self.request.user)
     
+# registers a new user
 class RegisterView(generics.CreateAPIView):     # accepts only POST requests for creating new users
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
