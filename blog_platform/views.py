@@ -4,23 +4,15 @@ from .models import Category, Tag, Post, Comment
 from .serializers import CategorySerializer, TagSerializer, PostSerializer, CommentSerializer, RegisterSerializer
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .permissions import IsAuthorOrReadOnly, IsCommentOwnerOrReadOnly
+from .permissions import IsAuthorOrReadOnly, IsCommentOwnerOrReadOnly, IsAdminOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.permissions import SAFE_METHODS, BasePermission
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 # Create your views here.
-
-# allows only admins to modify data while everone can read it
-class IsAdminOrReadOnly(BasePermission):
-    def has_permission(self, request, view):
-        if request.method in SAFE_METHODS:
-            return True
-        return request.user and request.user.is_staff
 
 # ModelViewSet automatically creates HTTP methods(GET, POST, PUT, PATCH, DELETE)
 # handles CRUD operations for blog categories
@@ -46,7 +38,7 @@ class PostViewSet(viewsets.ModelViewSet):
     
     search_fields = ['title','category__name','author__username']
     
-    filterset_fields = ['tags']
+    filterset_fields = ['tags','published_date']
     
     ordering_fields = ['published_date']
     ordering = ['-published_date']
