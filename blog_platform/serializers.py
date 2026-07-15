@@ -14,15 +14,7 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
-        
-# serializes post model        
-class PostSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    
-    class Meta:
-        model = Post
-        fields = "__all__"
-        
+                
 # serializes comment model
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
@@ -30,6 +22,15 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields ="__all__"
+        
+# serializes post model        
+class PostSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    comments = CommentSerializer(source='comment_set', many=True, read_only=True)
+    
+    class Meta:
+        model = Post
+        fields = ['id','title','content','category','tags','author','published_date','comments']
         
 # handles user registration
 class RegisterSerializer(serializers.ModelSerializer):
